@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ง้อแฟน 🌸 feat. Nagi</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e8eaf6, #e0f2f1, #f3e5f5, #e1f5fe);
+      background-size: 400% 400%;
+      animation: bgShift 8s ease infinite;
+      overflow: hidden;
+    }
+
+    @keyframes bgShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem 2rem 3rem;
+      max-width: 520px;
+      background: rgba(255,255,255,0.88);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== Nagi Character (Image) ===== */
+    .nagi-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .nagi-img {
+      width: 160px;
+      height: auto;
+      border-radius: 16px;
+      animation: nagiFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    }
+    @keyframes nagiFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .nagi-speech {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 0.8rem;
+      font-style: italic;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #1e3a5f;
+      margin-bottom: 0.5rem;
+    }
+
+    .message {
+      font-size: 1.15rem;
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      padding: 0 1rem;
+    }
+
+    .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    }
+    .btn-yes:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
+
+    .btn-no {
+      background: #eee;
+      color: #999;
+      font-size: 0.9rem;
+      position: absolute;
+    }
+    .btn-no:hover { background: #ddd; }
+
+    .result {
+      display: none;
+      margin-top: 1.5rem;
+      font-size: 1.3rem;
+      color: #1e3a5f;
+      animation: popIn 0.5s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Falling petals */
+    .petal {
+      position: fixed;
+      top: -40px;
+      font-size: 1.5rem;
+      animation: fall linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0.3; }
+    }
+
+    /* Floating Nagi smile images */
+    .nagi-float {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10;
+      animation: nagiSpin linear infinite;
+    }
+    @keyframes nagiSpin {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      25% { transform: translate(40px, -80px) rotate(90deg) scale(1.1); }
+      50% { transform: translate(-30px, -160px) rotate(180deg) scale(1); opacity: 0.9; }
+      75% { transform: translate(50px, -240px) rotate(270deg) scale(1.1); }
+      100% { transform: translate(0, -320px) rotate(360deg) scale(0.8); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="main">
+
+    <!-- Nagi Character -->
+    <div class="nagi-wrapper">
+      <img src="nangi.png" alt="Nagi Seishiro" class="nagi-img">
+    </div>
+
+    <p class="nagi-speech">"ให้อภัยเถอะนะ... 怒らないでほしいな…ちゃんと大事に思ってるから。"</p>
+
+    <h1>โกรธอยู่เหรอ...</h1>
+    <p class="message">
+      รู้ว่าผิดไปแล้ว ขอโทษนะ 🥺<br>
+      ไม่ได้ตั้งใจจะทำให้เสียใจเลย<br>
+       <br>
+      ดีกันนะครับ;-;
+    </p>
+    <div class="btn-group">
+      <button class="btn btn-yes" onclick="forgive()">ให้อภัย ⚽</button>
+      <button class="btn btn-no" id="noBtn" onclick="runAway()">ยังโกรธอยู่</button>
+    </div>
+    <div class="result" id="result">
+      🌷 ขอบคุณนะ จะไม่ทำให้เสียใจอีกแล้ว 🌷<br>
+      <span style="font-size: 1rem; color: #6b7280; font-style: italic;">"よかった〜" - Nagi</span><br>
+      <span style="font-size: 2rem;">🌸⚽✨🌺🌸</span>
+    </div>
+  </div>
+
+  <script>
+    // Falling items
+    const petals = ['🌸', '🌷', '⚽', '✨', '🌺', '⭐', '💐'];
+    function createPetal() {
+      const el = document.createElement('div');
+      el.className = 'petal';
+      el.textContent = petals[Math.floor(Math.random() * petals.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (4 + Math.random() * 4) + 's';
+      el.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 8000);
+    }
+    setInterval(createPetal, 400);
+
+    // "ยังโกรธอยู่" button runs away
+    const noBtn = document.getElementById('noBtn');
+    let escaped = false;
+    noBtn.style.position = 'relative';
+
+    noBtn.addEventListener('mouseenter', function () {
+      const maxX = 200;
+      const maxY = 150;
+      const x = (Math.random() - 0.5) * maxX * 2;
+      const y = (Math.random() - 0.5) * maxY * 2;
+      this.style.position = 'relative';
+      this.style.left = x + 'px';
+      this.style.top = y + 'px';
+      this.style.transition = 'all 0.2s ease';
+
+      if (!escaped) {
+        escaped = true;
+        const msgs = ['กดไม่ได้หรอก~ ⚽', 'นางิบอกว่าอย่าเลย~', 'めんどくさい~ กดให้อภัยเถอะ'];
+        this.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+        setTimeout(() => {
+          this.textContent = 'ง้ออยู่นะ~';
+          escaped = false;
+        }, 1200);
+      }
+    });
+
+    // Forgive - Nagi celebrates
+    function forgive() {
+      document.querySelector('.btn-group').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+
+      // Spawn floating nangismile images
+      for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+          const img = document.createElement('img');
+          img.src = 'nangismile.png';
+          img.className = 'nagi-float';
+          const size = 50 + Math.random() * 60;
+          img.style.width = size + 'px';
+          img.style.height = 'auto';
+          img.style.left = Math.random() * 100 + 'vw';
+          img.style.top = (60 + Math.random() * 40) + 'vh';
+          img.style.animationDuration = (3 + Math.random() * 3) + 's';
+          document.body.appendChild(img);
+          setTimeout(() => img.remove(), 6000);
+        }, i * 200);
+      }
+
+      // Burst of petals
+      for (let i = 0; i < 30; i++) {
+        setTimeout(createPetal, i * 80);
+      }
+    }
+
+    function runAway() {
+      noBtn.textContent = 'นางิบอกให้อภัยเถอะ~ 🥺';
+    }
+  </script>
+</body>
+</html>
